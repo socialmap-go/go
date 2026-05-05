@@ -9,7 +9,7 @@
     .container { display: flex; flex-wrap: wrap; padding: 20px; gap: 20px; }
     .card { background: white; padding: 20px; border-radius: 10px; flex: 1; min-width: 350px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);}
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;}
-    input, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+    input, select, textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; font-family: inherit;}
     label { font-weight: bold; font-size: 13px; display: block; margin-bottom: 5px; color: #555;}
     .btn-save { background: #2e7d32; color: white; padding: 15px; border: none; border-radius: 5px; width: 100%; cursor: pointer; font-weight: bold; font-size: 16px; margin-top: 10px;}
     table { width: 100%; border-collapse: collapse; font-size: 14px; }
@@ -40,9 +40,14 @@
       <div class="grid-2">
         <div><label>WhatsApp</label><input type="text" id="c_wa"></div><div><label>Maps</label><input type="text" id="c_maps"></div>
         <div><label>Facebook</label><input type="text" id="c_fb"></div><div><label>Instagram</label><input type="text" id="c_ig"></div>
-        <!-- 🔴 TikTok බොත්තම මෙතනට දැම්මා -->
         <div><label>TikTok</label><input type="text" id="c_tiktok"></div><div><label>Website</label><input type="text" id="c_web"></div>
         <div><label>Email</label><input type="text" id="c_email"></div><div><label>Menu PDF Link</label><input type="text" id="c_menu"></div>
+      </div>
+
+      <!-- 🏦 Bank Details Box -->
+      <div style="margin-bottom: 15px;">
+        <label>Bank Details (Account Name, Number, Bank)</label>
+        <textarea id="c_bank" rows="4" placeholder="Account Name: සමාගමේ නම&#10;Account No: 123456789&#10;Bank: BOC, Ratnapura"></textarea>
       </div>
       
       <div class="premium-box">
@@ -78,16 +83,20 @@
   </div>
 
   <script>
+    // 👇 ඔයාගේ Web App URL එක හරියටම මෙතනට දාන්න 👇
     const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzUNv3bLJX2yfMmxfoWtDyETRQ3r0yLkC5eSA9kI4DTccE-UXV471luYE7_ZXB9sLfy/exec";
 
     function loadCustomers() {
       fetch(`${APPS_SCRIPT_URL}?action=getAll`).then(res => res.json()).then(data => {
         let tbody = document.getElementById('tableBody'); tbody.innerHTML = "";
         data.data.forEach(c => {
-          const safeStr = (str) => (str||'').toString().replace(/'/g, "\\'");
+          // Newline (\n) ප්‍රශ්නය මඟහැරීම සඳහා විශේෂ කේතයක්
+          const safeStr = (str) => {
+             if(!str) return '';
+             return str.toString().replace(/'/g, "\\'").replace(/\n/g, "\\n").replace(/\r/g, "");
+          };
           
-          // TikTok එකත් ඇතුළත් කළා
-          let btnHtml = `<button class="btn-edit" onclick="editCust('${safeStr(c.ID)}','${safeStr(c.BusinessName)}','${safeStr(c.Type)}','${safeStr(c.WhatsApp)}','${safeStr(c.Maps)}','${safeStr(c.Facebook)}','${safeStr(c.Instagram)}','${safeStr(c.TikTok)}','${safeStr(c.Website)}','${safeStr(c.Email)}','${safeStr(c.MenuPDF)}','${safeStr(c.ThemeColor)}','${safeStr(c.Package)}','${safeStr(c.ExpiryDate)}','${safeStr(c.Status)}','${safeStr(c.LoyaltyStatus)}','${safeStr(c.StampTarget)}','${safeStr(c.ClientPhone)}','${safeStr(c.Password)}')">Edit</button>`;
+          let btnHtml = `<button class="btn-edit" onclick="editCust('${safeStr(c.ID)}','${safeStr(c.BusinessName)}','${safeStr(c.Type)}','${safeStr(c.WhatsApp)}','${safeStr(c.Maps)}','${safeStr(c.Facebook)}','${safeStr(c.Instagram)}','${safeStr(c.TikTok)}','${safeStr(c.Website)}','${safeStr(c.Email)}','${safeStr(c.MenuPDF)}','${safeStr(c.ThemeColor)}','${safeStr(c.Package)}','${safeStr(c.ExpiryDate)}','${safeStr(c.Status)}','${safeStr(c.LoyaltyStatus)}','${safeStr(c.StampTarget)}','${safeStr(c.ClientPhone)}','${safeStr(c.Password)}','${safeStr(c.BankDetails)}')">Edit</button>`;
           
           let lBadge = c.LoyaltyStatus === 'Active' ? `<span style="color:green;font-weight:bold;">ON (${c.StampTarget||10})</span>` : `<span style="color:red;">OFF</span>`;
           let appBadge = (c.ClientPhone && c.Password) ? `<span style="color:blue;font-weight:bold;">Granted</span>` : `<span style="color:gray;">No Access</span>`;
@@ -107,24 +116,21 @@
           Email: document.getElementById('c_email').value, MenuPDF: document.getElementById('c_menu').value, ThemeColor: document.getElementById('c_theme').value, 
           Package: document.getElementById('c_package').value, ExpiryDate: document.getElementById('c_expiry').value, Status: document.getElementById('c_status').value,
           LoyaltyStatus: document.getElementById('c_loyaltyStatus').value, StampTarget: document.getElementById('c_stampTarget').value,
-          ClientPhone: document.getElementById('c_clientPhone').value, Password: document.getElementById('c_password').value
+          ClientPhone: document.getElementById('c_clientPhone').value, Password: document.getElementById('c_password').value,
+          BankDetails: document.getElementById('c_bank').value // බැංකු විස්තර
         }
       };
       
       document.querySelector('.btn-save').innerText = "Saving...";
-      
       fetch(APPS_SCRIPT_URL, {method: "POST", body: JSON.stringify(payload)}).then(res=>res.json()).then(data=>{
         document.querySelector('.btn-save').innerText = "Save / Update Customer";
-        let m = document.getElementById('msg'); 
-        m.style.display="block"; m.innerText=data.message||data.error; 
-        m.style.background = data.success ? "#d4edda" : "#f8d7da";
-        m.style.color = data.success ? "green" : "red"; 
+        let m = document.getElementById('msg'); m.style.display="block"; m.innerText=data.message||data.error; 
+        m.style.background = data.success ? "#d4edda" : "#f8d7da"; m.style.color = data.success ? "green" : "red"; 
         if(data.success) loadCustomers();
       });
     }
 
-    // TikTok එකත් ඇතුළත් කළා
-    function editCust(id, name, type, wa, maps, fb, ig, tiktok, web, email, menu, theme, pkg, expiry, status, lStatus, lTarget, cPhone, cPass) {
+    function editCust(id, name, type, wa, maps, fb, ig, tiktok, web, email, menu, theme, pkg, expiry, status, lStatus, lTarget, cPhone, cPass, cBank) {
       document.getElementById('c_id').value = id; document.getElementById('c_name').value = name; document.getElementById('c_type').value = type;
       document.getElementById('c_wa').value = wa; document.getElementById('c_maps').value = maps; document.getElementById('c_fb').value = fb;
       document.getElementById('c_ig').value = ig; document.getElementById('c_tiktok').value = tiktok; document.getElementById('c_web').value = web; 
@@ -132,6 +138,7 @@
       document.getElementById('c_package').value = pkg; document.getElementById('c_status').value = status; 
       document.getElementById('c_loyaltyStatus').value = lStatus || 'Inactive'; document.getElementById('c_stampTarget').value = lTarget || '10';
       document.getElementById('c_clientPhone').value = cPhone || ''; document.getElementById('c_password').value = cPass || '';
+      document.getElementById('c_bank').value = cBank || ''; // බැංකු විස්තර පෙට්ටියට දැමීම
       
       if(expiry && expiry!=="undefined" && expiry!=="") { try { document.getElementById('c_expiry').value = new Date(expiry).toISOString().split('T')[0]; }catch(e){} }
       window.scrollTo({ top: 0, behavior: 'smooth' });
