@@ -43,10 +43,14 @@
         <div><label>Email</label><input type="text" id="c_email"></div><div><label>Menu PDF Link</label><input type="text" id="c_menu"></div>
       </div>
 
-      <!-- ⭐ Google Review Link -->
       <div style="margin-bottom: 15px;">
         <label>⭐ Google Review Link</label>
         <input type="text" id="c_review" placeholder="https://g.page/r/YOUR_LINK/review">
+      </div>
+      
+      <div style="margin-bottom: 15px;">
+        <label>🖼️ Profile Image Link (Google Drive URL)</label>
+        <input type="text" id="c_image" placeholder="https://drive.google.com/file/d/.../view">
       </div>
 
       <div style="margin-bottom: 15px;">
@@ -87,6 +91,7 @@
   </div>
 
   <script>
+    // 👇 ඔයාගේ Web App URL එක මෙතනට දාන්න 👇
     const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzUNv3bLJX2yfMmxfoWtDyETRQ3r0yLkC5eSA9kI4DTccE-UXV471luYE7_ZXB9sLfy/exec";
 
     function loadCustomers() {
@@ -95,7 +100,7 @@
         data.data.forEach(c => {
           const safeStr = (str) => { if(!str) return ''; return str.toString().replace(/'/g, "\\'").replace(/\n/g, "\\n").replace(/\r/g, ""); };
           
-          let btnHtml = `<button class="btn-edit" onclick="editCust('${safeStr(c.ID)}','${safeStr(c.BusinessName)}','${safeStr(c.Type)}','${safeStr(c.WhatsApp)}','${safeStr(c.Maps)}','${safeStr(c.Facebook)}','${safeStr(c.Instagram)}','${safeStr(c.TikTok)}','${safeStr(c.Website)}','${safeStr(c.Email)}','${safeStr(c.MenuPDF)}','${safeStr(c.ThemeColor)}','${safeStr(c.Package)}','${safeStr(c.ExpiryDate)}','${safeStr(c.Status)}','${safeStr(c.LoyaltyStatus)}','${safeStr(c.StampTarget)}','${safeStr(c.ClientPhone)}','${safeStr(c.Password)}','${safeStr(c.BankDetails)}','${safeStr(c.GoogleReview)}')">Edit</button>`;
+          let btnHtml = `<button class="btn-edit" onclick="editCust('${safeStr(c.ID)}','${safeStr(c.BusinessName)}','${safeStr(c.Type)}','${safeStr(c.WhatsApp)}','${safeStr(c.Maps)}','${safeStr(c.Facebook)}','${safeStr(c.Instagram)}','${safeStr(c.TikTok)}','${safeStr(c.Website)}','${safeStr(c.Email)}','${safeStr(c.MenuPDF)}','${safeStr(c.ThemeColor)}','${safeStr(c.Package)}','${safeStr(c.ExpiryDate)}','${safeStr(c.Status)}','${safeStr(c.LoyaltyStatus)}','${safeStr(c.StampTarget)}','${safeStr(c.ClientPhone)}','${safeStr(c.Password)}','${safeStr(c.BankDetails)}','${safeStr(c.GoogleReview)}','${safeStr(c.ProfileImage)}')">Edit</button>`;
           
           let lBadge = c.LoyaltyStatus === 'Active' ? `<span style="color:green;font-weight:bold;">ON (${c.StampTarget||10})</span>` : `<span style="color:red;">OFF</span>`;
           let appBadge = (c.ClientPhone && c.Password) ? `<span style="color:blue;font-weight:bold;">Granted</span>` : `<span style="color:gray;">No Access</span>`;
@@ -116,8 +121,8 @@
           Package: document.getElementById('c_package').value, ExpiryDate: document.getElementById('c_expiry').value, Status: document.getElementById('c_status').value,
           LoyaltyStatus: document.getElementById('c_loyaltyStatus').value, StampTarget: document.getElementById('c_stampTarget').value,
           ClientPhone: document.getElementById('c_clientPhone').value, Password: document.getElementById('c_password').value,
-          BankDetails: document.getElementById('c_bank').value, 
-          GoogleReview: document.getElementById('c_review').value // ⭐ අලුත් Review ලින්ක් එක
+          BankDetails: document.getElementById('c_bank').value, GoogleReview: document.getElementById('c_review').value,
+          ProfileImage: document.getElementById('c_image').value // 🖼️ Image Link එක Save කිරීම
         }
       };
       
@@ -130,7 +135,7 @@
       });
     }
 
-    function editCust(id, name, type, wa, maps, fb, ig, tiktok, web, email, menu, theme, pkg, expiry, status, lStatus, lTarget, cPhone, cPass, cBank, cReview) {
+    function editCust(id, name, type, wa, maps, fb, ig, tiktok, web, email, menu, theme, pkg, expiry, status, lStatus, lTarget, cPhone, cPass, cBank, cReview, cImage) {
       document.getElementById('c_id').value = id; document.getElementById('c_name').value = name; document.getElementById('c_type').value = type;
       document.getElementById('c_wa').value = wa; document.getElementById('c_maps').value = maps; document.getElementById('c_fb').value = fb;
       document.getElementById('c_ig').value = ig; document.getElementById('c_tiktok').value = tiktok; document.getElementById('c_web').value = web; 
@@ -138,8 +143,8 @@
       document.getElementById('c_package').value = pkg; document.getElementById('c_status').value = status; 
       document.getElementById('c_loyaltyStatus').value = lStatus || 'Inactive'; document.getElementById('c_stampTarget').value = lTarget || '10';
       document.getElementById('c_clientPhone').value = cPhone || ''; document.getElementById('c_password').value = cPass || '';
-      document.getElementById('c_bank').value = cBank || ''; 
-      document.getElementById('c_review').value = cReview || ''; // ⭐ Edit කරද්දී Review ලින්ක් එක පිරවීම
+      document.getElementById('c_bank').value = cBank || ''; document.getElementById('c_review').value = cReview || ''; 
+      document.getElementById('c_image').value = cImage || ''; // 🖼️ Edit කරද්දී Image Link එක පිරවීම
       
       if(expiry && expiry!=="undefined" && expiry!=="") { try { document.getElementById('c_expiry').value = new Date(expiry).toISOString().split('T')[0]; }catch(e){} }
       window.scrollTo({ top: 0, behavior: 'smooth' });
