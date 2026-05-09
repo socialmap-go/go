@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="si">
-<head>
+<!DOCTYPE html><html lang="si"><head>
   <meta charset="UTF-8">
   <title>Admin Dashboard | Social Map</title>
   <style>
@@ -20,9 +18,7 @@
     .product-row { background: #f9f9f9; padding: 10px; border-radius: 5px; margin-bottom: 10px; border-left: 5px solid #d32f2f; }
     .badge { font-size: 11px; padding: 3px 6px; border-radius: 4px; font-weight: bold; color: white; margin-right: 5px; }
     .b-Product { background: #ff9800; } .b-Room { background: #2196f3; } .b-Package { background: #9c27b0; }
-  </style>
-</head>
-<body>
+  </style></head><body>
   <div class="header">
     <h2 style="margin:0;">🔴 ADMIN DASHBOARD</h2>
     <button onclick="sessionStorage.clear(); window.location.href='index.html'" style="padding:8px 15px; cursor:pointer;">Logout</button>
@@ -32,26 +28,23 @@
     <div class="card">
       <h3 style="margin-top:0;">Customer Setup</h3>
       <div id="msg" style="display:none; padding:10px; margin-bottom:10px; font-weight:bold; border-radius:5px;"></div>
-      
       <div class="grid-2">
         <div><label>Shop ID</label><input type="text" id="c_id"></div>
         <div><label>Type</label><select id="c_type"><option value="profile">Profile</option><option value="redirect">Redirect</option></select></div>
       </div>
       <div><label>Business Name</label><input type="text" id="c_name" style="margin-bottom:15px;"></div>
-      
       <div class="grid-2">
         <div><label>WhatsApp</label><input type="text" id="c_wa"></div><div><label>Maps</label><input type="text" id="c_maps"></div>
         <div><label>Facebook</label><input type="text" id="c_fb"></div><div><label>Instagram</label><input type="text" id="c_ig"></div>
         <div><label>TikTok</label><input type="text" id="c_tiktok"></div><div><label>Website</label><input type="text" id="c_web"></div>
         <div><label>Email</label><input type="text" id="c_email"></div><div><label>Menu PDF Link</label><input type="text" id="c_menu"></div>
         <div><label>⭐ Review Link</label><input type="text" id="c_review"></div><div><label>🖼️ Profile Img</label><input type="text" id="c_image"></div>
+        <div style="grid-column: 1 / -1;"><label>🖼️ Cover Image (Background)</label><input type="text" id="c_cover" placeholder="Image Direct Link"></div>
       </div>
-
       <div style="margin-bottom: 15px;">
         <label>🏦 Bank Details</label>
         <textarea id="c_bank" rows="3"></textarea>
       </div>
-      
       <div class="premium-box">
         <h4 style="margin:0 0 10px 0; color:#e65100;">💎 Loyalty System</h4>
         <div class="grid-2">
@@ -59,7 +52,6 @@
           <div><label>Stamp Target</label><input type="number" id="c_stampTarget" value="10"></div>
         </div>
       </div>
-
       <div class="app-box">
         <h4 style="margin:0 0 10px 0; color:#1565c0;">📱 Client Login</h4>
         <div class="grid-2">
@@ -67,7 +59,6 @@
           <div><label>Password</label><input type="text" id="c_password"></div>
         </div>
       </div>
-
       <div class="grid-2">
         <div><label>Theme Color</label><input type="text" id="c_theme"></div><div><label>Status</label><select id="c_status"><option value="Active">Active</option><option value="Inactive">Inactive</option></select></div>
       </div>
@@ -88,46 +79,34 @@
         <div><label>Shop ID</label><input type="text" id="p_shop_id"></div>
         <div style="display:flex; align-items:flex-end;"><button class="btn-save" style="margin:0; background:#555;" onclick="adminFetchProducts()">Load List</button></div>
       </div>
-      
       <div id="adminAddProductArea" style="margin-top:20px; border: 1px dashed #ccc; padding:15px; border-radius:10px;">
         <h4 style="margin-top:0;">➕ අලුත් භාණ්ඩයක් / කාමරයක් / පැකේජයක් එක් කරන්න</h4>
         <div class="grid-2">
-          <div>
-            <label>වර්ගය තෝරන්න</label>
-            <select id="new_p_type">
-              <option value="Product">🍽️ Product / Food</option>
-              <option value="Room">🛏️ Hotel Room</option>
-              <option value="Package">🎁 Special Package</option>
-            </select>
-          </div>
+          <div><label>වර්ගය තෝරන්න</label><select id="new_p_type"><option value="Product">🍽️ Product / Food</option><option value="Room">🛏️ Hotel Room</option><option value="Package">🎁 Special Package</option></select></div>
           <div><label>නම</label><input type="text" id="new_p_name" placeholder="උදා: Deluxe Double Room"></div>
         </div>
         <div class="grid-2">
-          <div>
-            <label>මිල (රු.)</label>
-            <div style="display:flex; align-items:center; gap:5px;">
-              <span style="font-weight:bold; color:#777; font-size:16px;">රු.</span>
-              <input type="number" id="new_p_price" placeholder="උදා: 4500">
-            </div>
-          </div>
+          <div><label>මිල (රු.)</label><div style="display:flex; align-items:center; gap:5px;"><span style="font-weight:bold; color:#777; font-size:16px;">රු.</span><input type="number" id="new_p_price" placeholder="උදා: 4500"></div></div>
         </div>
-        <div style="margin-top:10px;">
-          <label>පින්තූර Links (Direct Links)</label>
-          <div class="grid-2">
-            <input type="text" id="new_p_img1" placeholder="🖼️ පින්තූර 1 Link">
-            <input type="text" id="new_p_img2" placeholder="🖼️ පින්තූර 2 Link">
-            <input type="text" id="new_p_img3" placeholder="🖼️ පින්තූර 3 Link">
-          </div>
-        </div>
+        <div style="margin-top:10px;"><label>පින්තූර Links (Direct Links)</label><div class="grid-2"><input type="text" id="new_p_img1" placeholder="🖼️ පින්තූර 1 Link"><input type="text" id="new_p_img2" placeholder="🖼️ පින්තූර 2 Link"><input type="text" id="new_p_img3" placeholder="🖼️ පින්තූර 3 Link"></div></div>
         <button class="btn-save" style="width:200px; padding:10px;" onclick="adminAddProduct()">Save Item</button>
       </div>
-
       <div id="adminProductsList" style="margin-top:20px;">Shop ID එක ගසා Load බොත්තම ඔබන්න.</div>
+    </div>
+    
+    <!-- Feedback Viewer Section -->
+    <div class="card" style="flex: 100%; margin-top: 10px;">
+      <h3 style="margin-top:0; color:#607d8b;">💬 Customer Feedbacks & Suggestions</h3>
+      <div class="grid-2" style="max-width: 600px; background:#e0f7fa; padding:15px; border-radius:10px;">
+        <div><label>Shop ID</label><input type="text" id="f_shop_id"></div>
+        <div style="display:flex; align-items:flex-end;"><button class="btn-save" style="margin:0; background:#00796b;" onclick="adminFetchFeedback()">Load Feedbacks</button></div>
+      </div>
+      <div id="adminFeedbackList" style="margin-top:20px;">Shop ID එක ගසා Load බොත්තම ඔබන්න.</div>
     </div>
   </div>
 
   <script>
-    // 👇 ඔයාගේ Web App URL එක මෙතනට දාන්න 👇
+    // WEB APP URL HERE
     const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzUNv3bLJX2yfMmxfoWtDyETRQ3r0yLkC5eSA9kI4DTccE-UXV471luYE7_ZXB9sLfy/exec";
 
     function loadCustomers() {
@@ -137,16 +116,13 @@
           const safeStr = (s) => { if (!s) return ''; return s.toString().replace(/\\/g, "\\\\").replace(/'/g, "\\'").replace(/\n/g, "\\n").replace(/\r/g, ""); };
           let lBadge = c.LoyaltyStatus === 'Active' ? `<span style="color:green;font-weight:bold;">ON</span>` : `<span style="color:red;">OFF</span>`;
           let appBadge = (c.ClientPhone && c.Password) ? `<span style="color:blue;font-weight:bold;">Granted</span>` : `<span style="color:gray;">No Access</span>`;
-
-          tbody.innerHTML += `<tr>
-            <td>${c.ID}</td><td>${c.BusinessName}</td><td>${appBadge}</td><td>${lBadge}</td>
-            <td><button class="btn-edit" onclick="editCust('${safeStr(c.ID)}','${safeStr(c.BusinessName)}','${safeStr(c.Type)}','${safeStr(c.WhatsApp)}','${safeStr(c.Maps)}','${safeStr(c.Facebook)}','${safeStr(c.Instagram)}','${safeStr(c.TikTok)}','${safeStr(c.Website)}','${safeStr(c.Email)}','${safeStr(c.MenuPDF)}','${safeStr(c.ThemeColor)}','${safeStr(c.Status)}','${safeStr(c.LoyaltyStatus)}','${safeStr(c.StampTarget)}','${safeStr(c.ClientPhone)}','${safeStr(c.Password)}','${safeStr(c.BankDetails)}','${safeStr(c.GoogleReview)}','${safeStr(c.ProfileImage)}')">Select</button></td>
-          </tr>`;
+          tbody.innerHTML += `<tr><td>${c.ID}</td><td>${c.BusinessName}</td><td>${appBadge}</td><td>${lBadge}</td>
+            <td><button class="btn-edit" onclick="editCust('${safeStr(c.ID)}','${safeStr(c.BusinessName)}','${safeStr(c.Type)}','${safeStr(c.WhatsApp)}','${safeStr(c.Maps)}','${safeStr(c.Facebook)}','${safeStr(c.Instagram)}','${safeStr(c.TikTok)}','${safeStr(c.Website)}','${safeStr(c.Email)}','${safeStr(c.MenuPDF)}','${safeStr(c.ThemeColor)}','${safeStr(c.Status)}','${safeStr(c.LoyaltyStatus)}','${safeStr(c.StampTarget)}','${safeStr(c.ClientPhone)}','${safeStr(c.Password)}','${safeStr(c.BankDetails)}','${safeStr(c.GoogleReview)}','${safeStr(c.ProfileImage)}','${safeStr(c.CoverImage)}')">Select</button></td></tr>`;
         });
       });
     }
 
-    function editCust(id, name, type, wa, maps, fb, ig, tiktok, web, email, menu, theme, status, lStat, lTarg, cPh, cPas, cBank, cRev, cImg) {
+    function editCust(id, name, type, wa, maps, fb, ig, tiktok, web, email, menu, theme, status, lStat, lTarg, cPh, cPas, cBank, cRev, cImg, cCover) {
       document.getElementById('c_id').value = id; document.getElementById('c_name').value = name; document.getElementById('c_type').value = type;
       document.getElementById('c_wa').value = wa; document.getElementById('c_maps').value = maps; document.getElementById('c_fb').value = fb;
       document.getElementById('c_ig').value = ig; document.getElementById('c_tiktok').value = tiktok; document.getElementById('c_web').value = web;
@@ -155,7 +131,9 @@
       document.getElementById('c_stampTarget').value = lTarg || 10; document.getElementById('c_clientPhone').value = cPh;
       document.getElementById('c_password').value = cPas; document.getElementById('c_bank').value = cBank;
       document.getElementById('c_review').value = cRev; document.getElementById('c_image').value = cImg;
+      document.getElementById('c_cover').value = cCover || '';
       document.getElementById('p_shop_id').value = id; adminFetchProducts();
+      document.getElementById('f_shop_id').value = id; adminFetchFeedback();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
@@ -170,7 +148,8 @@
           Status: document.getElementById('c_status').value, LoyaltyStatus: document.getElementById('c_loyaltyStatus').value,
           StampTarget: document.getElementById('c_stampTarget').value, ClientPhone: document.getElementById('c_clientPhone').value,
           Password: document.getElementById('c_password').value, BankDetails: document.getElementById('c_bank').value,
-          GoogleReview: document.getElementById('c_review').value, ProfileImage: document.getElementById('c_image').value
+          GoogleReview: document.getElementById('c_review').value, ProfileImage: document.getElementById('c_image').value,
+          CoverImage: document.getElementById('c_cover').value
         }
       };
       fetch(APPS_SCRIPT_URL, {method: "POST", body: JSON.stringify(payload)}).then(res=>res.json()).then(d=>{alert(d.message); loadCustomers();});
@@ -179,29 +158,14 @@
     function adminFetchProducts() {
       const sid = document.getElementById('p_shop_id').value;
       if (!sid) { alert("කරුණාකර Shop ID එක ඇතුළත් කරන්න."); return; }
-      
       document.getElementById('adminProductsList').innerHTML = "Loading...";
-      
       fetch(`${APPS_SCRIPT_URL}?action=getProducts&shopId=${sid}`).then(res=>res.json()).then(d=>{
         let h = "";
         if(d.success && d.data.length > 0) {
           d.data.forEach(p => {
-            let pType = p.Type || "Product";
-            let pName = p.ProductName || "නම නැත";
-            let pId = p.ProductID || "No-ID";
-            let pPrice = p.Price || 0;
-            
-            // ලස්සනට Type එක පෙන්වන Badge එක
+            let pType = p.Type || "Product"; let pName = p.ProductName || "නම නැත"; let pId = p.ProductID || "No-ID"; let pPrice = p.Price || 0;
             let badge = `<span class="badge b-${pType}">${pType}</span>`;
-
-            h += `<div class="product-row"><div class="grid-2">
-                    <div>${badge} <strong>${pName}</strong> <br><small style="color:gray;">(ID: ${pId})</small></div>
-                    <div style="display:flex; align-items:center; gap:5px;">
-                      <span style="font-weight:bold; color:#777; font-size:16px;">රු.</span>
-                      <input type="number" id="ad_p_${pId}" value="${pPrice}" style="padding:5px; width:100px;">
-                      <button class="btn-edit" style="background:green;" onclick="adminUpdatePrice('${pId}')">Update</button>
-                    </div>
-                  </div></div>`;
+            h += `<div class="product-row"><div class="grid-2"><div>${badge} <strong>${pName}</strong> <br><small style="color:gray;">(ID: ${pId})</small></div><div style="display:flex; align-items:center; gap:5px;"><span style="font-weight:bold; color:#777; font-size:16px;">රු.</span><input type="number" id="ad_p_${pId}" value="${pPrice}" style="padding:5px; width:100px;"><button class="btn-edit" style="background:green;" onclick="adminUpdatePrice('${pId}')">Update</button></div></div></div>`;
           });
         } else { h = "කිසිම භාණ්ඩයක් හෝ කාමරයක් ඇතුළත් කර නැත."; }
         document.getElementById('adminProductsList').innerHTML = h;
@@ -209,39 +173,37 @@
     }
 
     function adminAddProduct() {
-      const sid = document.getElementById('p_shop_id').value;
-      const type = document.getElementById('new_p_type').value;
-      const name = document.getElementById('new_p_name').value;
-      const price = document.getElementById('new_p_price').value;
-      const img1 = document.getElementById('new_p_img1').value;
-      const img2 = document.getElementById('new_p_img2').value;
-      const img3 = document.getElementById('new_p_img3').value;
-
+      const sid = document.getElementById('p_shop_id').value; const type = document.getElementById('new_p_type').value; const name = document.getElementById('new_p_name').value; const price = document.getElementById('new_p_price').value; const img1 = document.getElementById('new_p_img1').value; const img2 = document.getElementById('new_p_img2').value; const img3 = document.getElementById('new_p_img3').value;
       if (!sid || !name || !price) { alert("කරුණාකර Shop ID, නම සහ මිල අනිවාර්යයෙන් ඇතුළත් කරන්න."); return; }
-
-      fetch(APPS_SCRIPT_URL, {
-        method:"POST", 
-        body:JSON.stringify({
-          action:"addProduct", shopId:sid, type:type, name:name, price:price, img1:img1, img2:img2, img3:img3
-        })
-      }).then(res=>res.json()).then(d=>{
-        alert(d.message); 
-        adminFetchProducts(); 
-        document.getElementById('new_p_name').value = "";
-        document.getElementById('new_p_price').value = "";
-        document.getElementById('new_p_img1').value = "";
-        document.getElementById('new_p_img2').value = "";
-        document.getElementById('new_p_img3').value = "";
-      });
+      fetch(APPS_SCRIPT_URL, { method:"POST", body:JSON.stringify({ action:"addProduct", shopId:sid, type:type, name:name, price:price, img1:img1, img2:img2, img3:img3 }) }).then(res=>res.json()).then(d=>{ alert(d.message); adminFetchProducts(); document.getElementById('new_p_name').value = ""; document.getElementById('new_p_price').value = ""; document.getElementById('new_p_img1').value = ""; document.getElementById('new_p_img2').value = ""; document.getElementById('new_p_img3').value = ""; });
     }
 
     function adminUpdatePrice(pid) {
-      const sid = document.getElementById('p_shop_id').value;
-      const price = document.getElementById(`ad_p_${pid}`).value;
+      const sid = document.getElementById('p_shop_id').value; const price = document.getElementById(`ad_p_${pid}`).value;
       fetch(APPS_SCRIPT_URL, {method:"POST", body:JSON.stringify({action:"updatePrice", shopId:sid, productId:pid, price:price})}).then(res=>res.json()).then(d=>{alert(d.message);});
     }
 
+    function adminFetchFeedback() {
+      const sid = document.getElementById('f_shop_id').value;
+      if (!sid) { alert("කරුණාකර Shop ID එක ඇතුළත් කරන්න."); return; }
+      document.getElementById('adminFeedbackList').innerHTML = "Loading...";
+      fetch(`${APPS_SCRIPT_URL}?action=getFeedback&shopId=${sid}`).then(res=>res.json()).then(d=>{
+        let h = "";
+        if(d.success && d.data.length > 0) {
+          d.data.forEach(f => {
+            let imgHtml = (f.ImageURL && f.ImageURL !== "No Image" && f.ImageURL !== "Image Upload Error") ? `<br><a href="${f.ImageURL}" target="_blank" style="color:blue; text-decoration:underline; font-size:12px; font-weight:bold;">📸 View Attached Image</a>` : "";
+            let dateStr = new Date(f.Date).toLocaleString();
+            h += `<div class="product-row" style="border-left: 5px solid #00796b; background: white;">
+                    <div><small style="color:gray;">${dateStr}</small></div>
+                    <div><strong>👤 ${f.CustomerName || 'Anonymous'}</strong> (${f.Phone || 'No Phone'})</div>
+                    <div style="margin-top:8px; padding:10px; background:#f4f6f8; border:1px solid #ddd; border-radius:5px; font-size:14px;">${f.Message}</div>
+                    ${imgHtml}
+                  </div>`;
+          });
+        } else { h = "කිසිම අදහසක් හෝ යෝජනාවක් ලැබී නැත."; }
+        document.getElementById('adminFeedbackList').innerHTML = h;
+      });
+    }
+
     window.onload = loadCustomers;
-  </script>
-</body>
-</html>
+  </script></body></html>
