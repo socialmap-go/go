@@ -7,7 +7,7 @@
     body { font-family: sans-serif; background: #f4f6f8; margin: 0; padding: 0; }
     .header { background: #d32f2f; color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center;}
     .container { display: flex; flex-wrap: wrap; padding: 20px; gap: 20px; }
-    .card { background: white; padding: 20px; border-radius: 10px; flex: 1; min-width: 350px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);}
+    .card { background: white; padding: 20px; border-radius: 10px; flex: 1; min-width: 350px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 20px;}
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;}
     input, select, textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; font-family: inherit;}
     label { font-weight: bold; font-size: 13px; display: block; margin-bottom: 5px; color: #555;}
@@ -15,8 +15,7 @@
     table { width: 100%; border-collapse: collapse; font-size: 14px; }
     th, td { padding: 10px; border-bottom: 1px solid #ddd; text-align: left;}
     .btn-edit { background: #1976d2; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-weight: bold;}
-    .premium-box { background: #fff3e0; padding: 15px; border: 1px solid #ffb74d; border-radius: 8px; margin-bottom: 15px;}
-    .app-box { background: #e3f2fd; padding: 15px; border: 1px solid #90caf9; border-radius: 8px; margin-bottom: 15px;}
+    .product-row { background: #f9f9f9; padding: 10px; border-radius: 5px; margin-bottom: 10px; border-left: 5px solid #d32f2f; }
   </style>
 </head>
 <body>
@@ -29,64 +28,40 @@
     <div class="card">
       <h3 style="margin-top:0;">Customer Setup</h3>
       <div id="msg" style="display:none; padding:10px; margin-bottom:10px; font-weight:bold; border-radius:5px;"></div>
-      
       <div class="grid-2">
         <div><label>Shop ID</label><input type="text" id="c_id"></div>
         <div><label>Type</label><select id="c_type"><option value="profile">Profile</option><option value="redirect">Redirect</option></select></div>
       </div>
-      <div><label>Business Name</label><input type="text" id="c_name" style="margin-bottom:15px;"></div>
-      
-      <div class="grid-2">
+      <div><label>Business Name</label><input type="text" id="c_name"></div>
+      <div class="grid-2" style="margin-top:15px;">
         <div><label>WhatsApp</label><input type="text" id="c_wa"></div><div><label>Maps</label><input type="text" id="c_maps"></div>
         <div><label>Facebook</label><input type="text" id="c_fb"></div><div><label>Instagram</label><input type="text" id="c_ig"></div>
-        <div><label>TikTok</label><input type="text" id="c_tiktok"></div><div><label>Website</label><input type="text" id="c_web"></div>
-        <div><label>Email</label><input type="text" id="c_email"></div><div><label>Menu PDF Link</label><input type="text" id="c_menu"></div>
-      </div>
-
-      <div style="margin-bottom: 15px;">
-        <label>⭐ Google Review Link</label>
-        <input type="text" id="c_review" placeholder="https://g.page/r/YOUR_LINK/review">
-      </div>
-      
-      <div style="margin-bottom: 15px;">
-        <label>🖼️ Profile Image Link (Google Drive URL)</label>
-        <input type="text" id="c_image" placeholder="https://drive.google.com/file/d/.../view">
-      </div>
-
-      <div style="margin-bottom: 15px;">
-        <label>🏦 Bank Details</label>
-        <textarea id="c_bank" rows="3" placeholder="Account Name:&#10;Account No:&#10;Bank:"></textarea>
-      </div>
-      
-      <div class="premium-box">
-        <h4 style="margin:0 0 10px 0; color:#e65100;">💎 Premium Loyalty Program</h4>
-        <div class="grid-2" style="margin-bottom:0;">
-          <div><label>Status</label><select id="c_loyaltyStatus"><option value="Inactive">Inactive</option><option value="Active">Active</option></select></div>
-          <div><label>Stamp Target</label><input type="number" id="c_stampTarget" value="10"></div>
-        </div>
-      </div>
-
-      <div class="app-box">
-        <h4 style="margin:0 0 10px 0; color:#1565c0;">📱 Client App Access (Dashboard)</h4>
-        <div class="grid-2" style="margin-bottom:0;">
-          <div><label>Client Phone (Login ID)</label><input type="tel" id="c_clientPhone" placeholder="07XXXXXXXX"></div>
-          <div><label>Password</label><input type="text" id="c_password" placeholder="e.g. 1234"></div>
-        </div>
-      </div>
-
-      <div class="grid-2">
-        <div><label>Theme Color</label><input type="text" id="c_theme" placeholder="#d32f2f"></div><div><label>Package</label><input type="text" id="c_package"></div>
-        <div><label>Expiry Date</label><input type="date" id="c_expiry"></div><div><label>Account Status</label><select id="c_status"><option value="Active">Active</option><option value="Inactive">Inactive</option></select></div>
       </div>
       <button class="btn-save" onclick="saveData()">Save / Update Customer</button>
     </div>
 
-    <div class="card" style="flex: 2;">
+    <div class="card" style="flex: 1.5;">
       <h3 style="margin-top:0;">Customer List</h3>
       <table>
-        <thead><tr><th>ID</th><th>Name</th><th>App Access</th><th>Loyalty</th><th>Action</th></tr></thead>
-        <tbody id="tableBody"><tr><td colspan="5">Loading...</td></tr></tbody>
+        <thead><tr><th>ID</th><th>Name</th><th>Action</th></tr></thead>
+        <tbody id="tableBody"><tr><td colspan="3">Loading...</td></tr></tbody>
       </table>
+    </div>
+
+    <div class="card" style="flex: 100%;">
+      <h3 style="margin-top:0; color:#d32f2f;">📦 Product & Price Manager</h3>
+      <div class="grid-2" style="max-width: 500px;">
+        <div>
+          <label>Manage Shop ID</label>
+          <input type="text" id="p_shop_id" placeholder="Shop ID එක ගහන්න (උදා: 102)">
+        </div>
+        <div style="display:flex; align-items:flex-end;">
+          <button class="btn-save" style="margin:0; background:#555;" onclick="adminFetchProducts()">Load Products</button>
+        </div>
+      </div>
+      <div id="adminProductMsg" style="margin-top:10px; font-weight:bold;"></div>
+      <hr style="margin:20px 0; border:0; border-top:1px solid #eee;">
+      <div id="adminProductsList">Shop ID එක ගසා Load බොත්තම ඔබන්න.</div>
     </div>
   </div>
 
@@ -98,57 +73,64 @@
       fetch(`${APPS_SCRIPT_URL}?action=getAll`).then(res => res.json()).then(data => {
         let tbody = document.getElementById('tableBody'); tbody.innerHTML = "";
         data.data.forEach(c => {
-          const safeStr = (str) => { if(!str) return ''; return str.toString().replace(/'/g, "\\'").replace(/\n/g, "\\n").replace(/\r/g, ""); };
-          
-          let btnHtml = `<button class="btn-edit" onclick="editCust('${safeStr(c.ID)}','${safeStr(c.BusinessName)}','${safeStr(c.Type)}','${safeStr(c.WhatsApp)}','${safeStr(c.Maps)}','${safeStr(c.Facebook)}','${safeStr(c.Instagram)}','${safeStr(c.TikTok)}','${safeStr(c.Website)}','${safeStr(c.Email)}','${safeStr(c.MenuPDF)}','${safeStr(c.ThemeColor)}','${safeStr(c.Package)}','${safeStr(c.ExpiryDate)}','${safeStr(c.Status)}','${safeStr(c.LoyaltyStatus)}','${safeStr(c.StampTarget)}','${safeStr(c.ClientPhone)}','${safeStr(c.Password)}','${safeStr(c.BankDetails)}','${safeStr(c.GoogleReview)}','${safeStr(c.ProfileImage)}')">Edit</button>`;
-          
-          let lBadge = c.LoyaltyStatus === 'Active' ? `<span style="color:green;font-weight:bold;">ON (${c.StampTarget||10})</span>` : `<span style="color:red;">OFF</span>`;
-          let appBadge = (c.ClientPhone && c.Password) ? `<span style="color:blue;font-weight:bold;">Granted</span>` : `<span style="color:gray;">No Access</span>`;
-          
-          tbody.innerHTML += `<tr><td>${c.ID}</td><td>${c.BusinessName}</td><td>${appBadge}</td><td>${lBadge}</td><td>${btnHtml}</td></tr>`;
+          tbody.innerHTML += `<tr><td>${c.ID}</td><td>${c.BusinessName}</td><td><button class="btn-edit" onclick="setShopId('${c.ID}')">Select</button></td></tr>`;
         });
       });
     }
 
+    function setShopId(id) {
+      document.getElementById('p_shop_id').value = id;
+      adminFetchProducts();
+    }
+
     function saveData() {
-      const payload = {
-        action: "saveCustomer", staffId: "Admin", staffName: "Admin",
-        customerData: {
-          ID: document.getElementById('c_id').value, Type: document.getElementById('c_type').value, BusinessName: document.getElementById('c_name').value,
-          WhatsApp: document.getElementById('c_wa').value, Maps: document.getElementById('c_maps').value, Facebook: document.getElementById('c_fb').value,
-          Instagram: document.getElementById('c_ig').value, TikTok: document.getElementById('c_tiktok').value, Website: document.getElementById('c_web').value, 
-          Email: document.getElementById('c_email').value, MenuPDF: document.getElementById('c_menu').value, ThemeColor: document.getElementById('c_theme').value, 
-          Package: document.getElementById('c_package').value, ExpiryDate: document.getElementById('c_expiry').value, Status: document.getElementById('c_status').value,
-          LoyaltyStatus: document.getElementById('c_loyaltyStatus').value, StampTarget: document.getElementById('c_stampTarget').value,
-          ClientPhone: document.getElementById('c_clientPhone').value, Password: document.getElementById('c_password').value,
-          BankDetails: document.getElementById('c_bank').value, GoogleReview: document.getElementById('c_review').value,
-          ProfileImage: document.getElementById('c_image').value // 🖼️ Image Link එක Save කිරීම
-        }
-      };
+      // මෙතැනට කලින් saveData කෝඩ් එකම එනවා
+    }
+
+    // --- 📦 ADMIN PRODUCT MANAGEMENT ---
+    function adminFetchProducts() {
+      const shopId = document.getElementById('p_shop_id').value;
+      if(!shopId) { alert("කරුණාකර Shop ID එක ඇතුළත් කරන්න."); return; }
       
-      document.querySelector('.btn-save').innerText = "Saving...";
-      fetch(APPS_SCRIPT_URL, {method: "POST", body: JSON.stringify(payload)}).then(res=>res.json()).then(data=>{
-        document.querySelector('.btn-save').innerText = "Save / Update Customer";
-        let m = document.getElementById('msg'); m.style.display="block"; m.innerText=data.message||data.error; 
-        m.style.background = data.success ? "#d4edda" : "#f8d7da"; m.style.color = data.success ? "green" : "red"; 
-        if(data.success) loadCustomers();
+      const listDiv = document.getElementById('adminProductsList');
+      listDiv.innerHTML = "Loading...";
+
+      fetch(`${APPS_SCRIPT_URL}?action=getProducts&shopId=${shopId}`)
+        .then(res => res.json()).then(data => {
+          listDiv.innerHTML = "";
+          if(data.success && data.data.length > 0) {
+            data.data.forEach(p => {
+              listDiv.innerHTML += `
+                <div class="product-row">
+                  <div class="grid-2">
+                    <div><strong>${p.ProductName}</strong> (ID: ${p.ProductID})</div>
+                    <div style="display:flex; gap:10px;">
+                      <input type="number" id="admin_p_${p.ProductID}" value="${p.Price}" style="padding:5px;">
+                      <button class="btn-edit" style="background:#2e7d32;" onclick="adminUpdatePrice('${p.ProductID}')">Update Price</button>
+                    </div>
+                  </div>
+                </div>`;
+            });
+          } else {
+            listDiv.innerHTML = "මෙම Shop ID එකට අදාළ භාණ්ඩ කිසිවක් 'Products' sheet එකේ හමුවුණේ නැත.";
+          }
+        });
+    }
+
+    function adminUpdatePrice(productId) {
+      const shopId = document.getElementById('p_shop_id').value;
+      const newPrice = document.getElementById('admin_p_' + productId).value;
+      const msg = document.getElementById('adminProductMsg');
+      
+      msg.innerText = "Updating..."; msg.style.color = "blue";
+
+      fetch(APPS_SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'updatePrice', shopId: shopId, productId: productId, price: newPrice }) })
+      .then(res => res.json()).then(data => {
+        if(data.success) { msg.innerText = "සාර්ථකව යාවත්කාලීන කළා!"; msg.style.color = "green"; }
+        else { msg.innerText = "වැරදීමක් වුණා!"; msg.style.color = "red"; }
       });
     }
 
-    function editCust(id, name, type, wa, maps, fb, ig, tiktok, web, email, menu, theme, pkg, expiry, status, lStatus, lTarget, cPhone, cPass, cBank, cReview, cImage) {
-      document.getElementById('c_id').value = id; document.getElementById('c_name').value = name; document.getElementById('c_type').value = type;
-      document.getElementById('c_wa').value = wa; document.getElementById('c_maps').value = maps; document.getElementById('c_fb').value = fb;
-      document.getElementById('c_ig').value = ig; document.getElementById('c_tiktok').value = tiktok; document.getElementById('c_web').value = web; 
-      document.getElementById('c_email').value = email; document.getElementById('c_menu').value = menu; document.getElementById('c_theme').value = theme; 
-      document.getElementById('c_package').value = pkg; document.getElementById('c_status').value = status; 
-      document.getElementById('c_loyaltyStatus').value = lStatus || 'Inactive'; document.getElementById('c_stampTarget').value = lTarget || '10';
-      document.getElementById('c_clientPhone').value = cPhone || ''; document.getElementById('c_password').value = cPass || '';
-      document.getElementById('c_bank').value = cBank || ''; document.getElementById('c_review').value = cReview || ''; 
-      document.getElementById('c_image').value = cImage || ''; // 🖼️ Edit කරද්දී Image Link එක පිරවීම
-      
-      if(expiry && expiry!=="undefined" && expiry!=="") { try { document.getElementById('c_expiry').value = new Date(expiry).toISOString().split('T')[0]; }catch(e){} }
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
     window.onload = loadCustomers;
   </script>
 </body>
