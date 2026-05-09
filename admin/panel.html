@@ -87,7 +87,7 @@
         <div style="display:flex; align-items:flex-end;"><button class="btn-save" style="margin:0; background:#555;" onclick="adminFetchProducts()">Load Products</button></div>
       </div>
       
-      <div id="adminAddProductArea" style="display:none; margin-top:20px; border: 1px dashed #ccc; padding:15px; border-radius:10px;">
+      <div id="adminAddProductArea" style="margin-top:20px; border: 1px dashed #ccc; padding:15px; border-radius:10px;">
         <h4 style="margin-top:0;">➕ අලුත් භාණ්ඩයක් එක් කරන්න</h4>
         <div class="grid-2">
           <input type="text" id="new_p_name" placeholder="භාණ්ඩයේ නම">
@@ -145,8 +145,11 @@
 
     function adminFetchProducts() {
       const sid = document.getElementById('p_shop_id').value;
+      if (!sid) {
+        alert("කරුණාකර Shop ID එක ඇතුළත් කරන්න.");
+        return;
+      }
       document.getElementById('adminProductsList').innerHTML = "Loading...";
-      document.getElementById('adminAddProductArea').style.display = "block";
       fetch(`${APPS_SCRIPT_URL}?action=getProducts&shopId=${sid}`).then(res=>res.json()).then(d=>{
         let h = "";
         if(d.success && d.data.length > 0) {
@@ -162,7 +165,23 @@
       const sid = document.getElementById('p_shop_id').value;
       const name = document.getElementById('new_p_name').value;
       const price = document.getElementById('new_p_price').value;
-      fetch(APPS_SCRIPT_URL, {method:"POST", body:JSON.stringify({action:"addProduct", shopId:sid, name:name, price:price})}).then(res=>res.json()).then(d=>{alert(d.message); adminFetchProducts();});
+
+      if (!sid) {
+        alert("කරුණාකර Shop ID එක ඇතුළත් කරන්න.");
+        return;
+      }
+      if (!name || !price) {
+        alert("කරුණාකර භාණ්ඩයේ නම සහ මිල ඇතුළත් කරන්න.");
+        return;
+      }
+
+      fetch(APPS_SCRIPT_URL, {method:"POST", body:JSON.stringify({action:"addProduct", shopId:sid, name:name, price:price})}).then(res=>res.json()).then(d=>{
+        alert(d.message); 
+        adminFetchProducts(); // ලිස්ට් එක Refresh කරනවා
+        // Add කරාට පස්සේ කොටු දෙක හිස් කරනවා
+        document.getElementById('new_p_name').value = "";
+        document.getElementById('new_p_price').value = "";
+      });
     }
 
     function adminUpdatePrice(pid) {
