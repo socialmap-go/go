@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="si">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Business Portal | Social Map</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     body { font-family: 'Segoe UI', sans-serif; background: #f4f7f9; margin: 0; padding: 0; display: flex; justify-content: center;}
     .container { width: 100%; max-width: 400px; margin: 20px; padding: 25px; background: white; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); text-align: center; box-sizing: border-box;}
@@ -32,9 +33,9 @@
   <div class="container" id="loginBox">
     <img src="https://via.placeholder.com/80/d32f2f/ffffff?text=SM" style="border-radius:20px; margin-bottom:15px;">
     <h2>Business Login</h2>
-    <p style="color:#777; font-size:14px;">ඔබගේ ව්‍යාපාරික පද්ධතියට ඇතුල්වන්න</p>
-    <input type="tel" id="uPhone" placeholder="දුරකථන අංකය (07XXXXXXXX)">
-    <input type="password" id="uPass" placeholder="මුරපදය (Password)">
+    <p style="color:#777; font-size:14px;">Login to your business portal</p>
+    <input type="tel" id="uPhone" placeholder="Phone Number (07XXXXXXXX)">
+    <input type="password" id="uPass" placeholder="Password">
     <button class="btn" style="background:#d32f2f;" onclick="login()">Login</button>
     <p id="loginMsg" style="color:red; font-size:13px; display:none;"></p>
   </div>
@@ -57,16 +58,16 @@
     </div>
 
     <div id="view-stats">
-      <div class="stat-card"><div class="stat-label">මුළු ස්කෑන් වාර ගණන</div><div class="stat-number" id="scans">...</div></div>
-      <div class="stat-card"><div class="stat-label">Loyalty පාරිභෝගිකයින්</div><div class="stat-number" id="loyaltyUsers">...</div></div>
-      <div class="stat-card"><div class="stat-label">මුළු මුද්දර ලබාදීම්</div><div class="stat-number" id="stamps">...</div></div>
+      <div class="stat-card"><div class="stat-label">Total Scans</div><div class="stat-number" id="scans">...</div></div>
+      <div class="stat-card"><div class="stat-label">Loyalty Customers</div><div class="stat-number" id="loyaltyUsers">...</div></div>
+      <div class="stat-card"><div class="stat-label">Total Stamps Given</div><div class="stat-number" id="stamps">...</div></div>
       <button class="btn" style="background:#555; padding:10px;" onclick="fetchStats()">🔄 Refresh Data</button>
     </div>
 
     <div id="view-cashier" style="display: none;">
-      <span class="input-label">පාරිභෝගික දුරකථන අංකය</span><input type="tel" id="cPhone" placeholder="07XXXXXXXX" maxlength="10">
-      <span class="input-label">ලබාදෙන මුද්දර ගණන</span><input type="number" id="cStampCount" value="1" min="1">
-      <button class="btn" style="background:#2e7d32;" onclick="processAction('loyaltyAddStamp')">+ Add Stamps (මුද්දර දෙන්න)</button>
+      <span class="input-label">Customer Phone Number</span><input type="tel" id="cPhone" placeholder="07XXXXXXXX" maxlength="10">
+      <span class="input-label">Number of Stamps</span><input type="number" id="cStampCount" value="1" min="1">
+      <button class="btn" style="background:#2e7d32;" onclick="processAction('loyaltyAddStamp')">+ Add Stamps</button>
       <button class="btn" style="background:#ff9800;" onclick="processAction('loyaltyRedeem')">🎁 Redeem Reward</button>
       <button class="btn" style="background:#757575;" onclick="processAction('loyaltyCashierReset')">🔄 Reset PIN</button>
       <div id="actionMsg" class="msg"></div>
@@ -74,10 +75,10 @@
 
     <div id="view-products" style="display: none;">
       <div style="background:#f9f9f9; padding:15px; border-radius:10px; margin-bottom:20px; border: 1px dashed #ccc;">
-        <h4 style="margin-top:0;">➕ අලුත් අයිතමයක් එක් කරන්න</h4>
+        <h4 style="margin-top:0;">➕ Add New Item</h4>
         <select id="new_p_type" style="margin-top:0;"><option value="Product">🍽️ Product / Food</option><option value="Room">🛏️ Hotel Room</option><option value="Package">🎁 Special Package</option></select>
-        <input type="text" id="new_p_name" placeholder="නම (උදා: Fried Rice)">
-        <input type="number" id="new_p_price" placeholder="මිල (උදා: 1200)">
+        <input type="text" id="new_p_name" placeholder="Name (e.g. Fried Rice)">
+        <input type="number" id="new_p_price" placeholder="Price (e.g. 1200)">
         <button class="btn" style="background:#2e7d32;" onclick="addProductClient()">Add Item</button>
       </div>
       <div id="productMsg" class="msg" style="padding:10px; font-size:13px;"></div>
@@ -85,13 +86,14 @@
     </div>
 
     <div id="view-feedback" style="display: none;">
-      <h4 style="text-align:left; color:#555; margin-top:0;">පාරිභෝගික අදහස් හා යෝජනා</h4>
+      <h4 style="text-align:left; color:#555; margin-top:0;">Customer Feedback & Suggestions</h4>
       <div id="feedbackList">Loading feedbacks...</div>
     </div>
 
   </div>
 
   <script>
+    // WEB APP URL HERE
     const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzUNv3bLJX2yfMmxfoWtDyETRQ3r0yLkC5eSA9kI4DTccE-UXV471luYE7_ZXB9sLfy/exec";
 
     function login() {
@@ -125,7 +127,7 @@
 
     function processAction(actionType) {
       const shopId = localStorage.getItem('shopId'); const phone = document.getElementById('cPhone').value; const count = document.getElementById('cStampCount').value; const msgBox = document.getElementById('actionMsg');
-      if(phone.length !== 10) { showMsg('actionMsg', "කරුණාකර නිවැරදි අංකයක් දෙන්න.", false); return; }
+      if(phone.length !== 10) { showMsg('actionMsg', "Please enter a valid 10-digit number.", false); return; }
       msgBox.innerText = "Processing..."; msgBox.style.display="block"; msgBox.style.background="#eee"; msgBox.style.color="black";
       fetch(APPS_SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: actionType, shopId: shopId, phone: phone, stampCount: count }) }).then(res => res.json()).then(data => { if(data.success) { showMsg('actionMsg', data.message, true); document.getElementById('cPhone').value = ""; document.getElementById('cStampCount').value = 1; fetchStats(); } else { showMsg('actionMsg', data.error, false); } }).catch(err => showMsg('actionMsg', "Network Error!", false));
     }
@@ -142,27 +144,26 @@
                   <div style="font-size:11px; background:#ddd; padding:2px 5px; border-radius:3px; display:inline-block; margin-bottom:5px;">${pType}</div>
                   <div class="product-title">${pName}</div>
                   <div class="price-update-row">
-                    <span style="font-weight:bold; color:#777;">රු.</span>
+                    <span style="font-weight:bold; color:#777;">Rs.</span>
                     <input type="number" id="price_${pId}" value="${pPrice}" style="margin:0; padding:10px; flex:1;">
                     <button class="btn" style="background:#1976d2; margin:0; padding:10px 15px; font-size:14px; width:auto;" onclick="updatePrice('${pId}')">Update</button>
                   </div></div>`;
             });
-          } else { list.innerHTML = "<p style='color:gray;'>භාණ්ඩ කිසිවක් තවම ඇතුළත් කර නැත.</p>"; }
+          } else { list.innerHTML = "<p style='color:gray;'>No items added yet.</p>"; }
         });
     }
 
     function updatePrice(productId) {
       const msgBox = document.getElementById('productMsg'); msgBox.innerText = "Updating..."; msgBox.style.display="block"; msgBox.style.background="#eee"; msgBox.style.color="black";
-      fetch(APPS_SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'updatePrice', shopId: localStorage.getItem('shopId'), productId: productId, price: document.getElementById('price_' + productId).value }) }).then(res => res.json()).then(data => { if(data.success) { showMsg('productMsg', "මිල යාවත්කාලීන කළා!", true); } else { showMsg('productMsg', data.error || "Error", false); } setTimeout(() => msgBox.style.display="none", 3000); });
+      fetch(APPS_SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'updatePrice', shopId: localStorage.getItem('shopId'), productId: productId, price: document.getElementById('price_' + productId).value }) }).then(res => res.json()).then(data => { if(data.success) { showMsg('productMsg', "Price updated successfully!", true); } else { showMsg('productMsg', data.error || "Error", false); } setTimeout(() => msgBox.style.display="none", 3000); });
     }
 
     function addProductClient() {
       const name = document.getElementById('new_p_name').value; const price = document.getElementById('new_p_price').value; const type = document.getElementById('new_p_type').value;
-      if(!name || !price) { alert("විස්තර පුරවන්න"); return; }
+      if(!name || !price) { alert("Please fill in all details."); return; }
       fetch(APPS_SCRIPT_URL, {method:"POST", body:JSON.stringify({action:"addProduct", shopId:localStorage.getItem('shopId'), type:type, name:name, price:price})}).then(res=>res.json()).then(d=>{ alert(d.message); document.getElementById('new_p_name').value = ""; document.getElementById('new_p_price').value = ""; fetchProducts(); });
     }
 
-    // 📝 අලුත්: Feedbacks ලෝඩ් කරන කොටස
     function fetchFeedback() {
       fetch(`${APPS_SCRIPT_URL}?action=getFeedback&shopId=${localStorage.getItem('shopId')}`).then(res => res.json()).then(data => {
           const list = document.getElementById('feedbackList'); list.innerHTML = "";
@@ -172,12 +173,12 @@
               let dateStr = new Date(f.Date).toLocaleDateString();
               list.innerHTML += `<div style="background: #fafafa; border: 1px solid #ddd; padding: 15px; border-radius: 10px; margin-bottom: 15px; text-align: left;">
                   <div style="font-size:12px; color:gray;">📅 ${dateStr}</div>
-                  <div style="font-weight:bold; color:#333; margin:5px 0;">👤 ${f.CustomerName} <span style="font-weight:normal; color:#555;">(${f.Phone || '-'})</span></div>
+                  <div style="font-weight:bold; color:#333; margin:5px 0;">👤 ${f.CustomerName || 'Anonymous'} <span style="font-weight:normal; color:#555;">(${f.Phone || '-'})</span></div>
                   <div style="color:#444; font-size:14px; background:#eef2f5; padding:10px; border-radius:5px;">💬 ${f.Message}</div>
                   ${imgHtml}
                 </div>`;
             });
-          } else { list.innerHTML = "<p style='color:gray;'>තවම කිසිදු අදහසක් හෝ යෝජනාවක් ලැබී නැත.</p>"; }
+          } else { list.innerHTML = "<p style='color:gray;'>No feedback or suggestions received yet.</p>"; }
         });
     }
   </script>
