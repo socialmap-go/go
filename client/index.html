@@ -65,8 +65,13 @@
     </div>
 
     <div id="view-cashier" style="display: none;">
-      <span class="input-label">Customer Phone Number</span><input type="tel" id="cPhone" placeholder="07XXXXXXXX" maxlength="10">
-      <span class="input-label">Number of Stamps</span><input type="number" id="cStampCount" value="1" min="1">
+      <span class="input-label">Customer Phone Number</span>
+      <div style="display:flex; gap:10px; margin-bottom:10px;">
+        <input type="tel" id="cPhone" placeholder="07XXXXXXXX" maxlength="10" style="margin:0; flex:1;">
+        <button class="btn" style="background:#1976d2; margin:0; width:auto; padding:0 20px;" onclick="checkCustomerLoyalty()">🔍 Check</button>
+      </div>
+      <span class="input-label">Number of Stamps</span>
+      <input type="number" id="cStampCount" value="1" min="1">
       <button class="btn" style="background:#2e7d32;" onclick="processAction('loyaltyAddStamp')">+ Add Stamps</button>
       <button class="btn" style="background:#ff9800;" onclick="processAction('loyaltyRedeem')">🎁 Redeem Reward</button>
       <button class="btn" style="background:#757575;" onclick="processAction('loyaltyCashierReset')">🔄 Reset PIN</button>
@@ -124,6 +129,18 @@
     }
 
     function fetchStats() { fetch(`${APPS_SCRIPT_URL}?action=getClientStats&shopId=${localStorage.getItem('shopId')}`).then(res => res.json()).then(data => { if(data.success) { document.getElementById('scans').innerText = data.totalScans; document.getElementById('loyaltyUsers').innerText = data.loyaltyCustomers; document.getElementById('stamps').innerText = data.totalStamps; } }); }
+
+    function checkCustomerLoyalty() {
+      const shopId = localStorage.getItem('shopId'); const phone = document.getElementById('cPhone').value;
+      const msgBox = document.getElementById('actionMsg');
+      if(phone.length !== 10) { showMsg('actionMsg', "Please enter a valid 10-digit number.", false); return; }
+      msgBox.innerText = "Checking..."; msgBox.style.display="block"; msgBox.style.background="#e3f2fd"; msgBox.style.color="#1565c0";
+      fetch(`${APPS_SCRIPT_URL}?action=getCashierLoyalty&shopId=${shopId}&phone=${phone}`).then(res=>res.json()).then(data => {
+        if(data.success) {
+           msgBox.innerHTML = `Current Stamps: <span style="font-size:18px; font-weight:bold; color:#d32f2f;">${data.stamps}</span> <br> Total Redeemed Rewards: <span style="font-size:18px; font-weight:bold; color:#2e7d32;">${data.redeemed}</span>`;
+        } else { showMsg('actionMsg', data.error, false); }
+      }).catch(err => showMsg('actionMsg', "Network Error", false));
+    }
 
     function processAction(actionType) {
       const shopId = localStorage.getItem('shopId'); const phone = document.getElementById('cPhone').value; const count = document.getElementById('cStampCount').value; const msgBox = document.getElementById('actionMsg');
