@@ -45,13 +45,18 @@
         <label>🏦 Bank Details</label>
         <textarea id="c_bank" rows="3"></textarea>
       </div>
+      
+      <!-- Feature Access Control -->
       <div class="premium-box">
-        <h4 style="margin:0 0 10px 0; color:#e65100;">💎 Loyalty System</h4>
+        <h4 style="margin:0 0 10px 0; color:#e65100;">💎 Access Control (Features)</h4>
         <div class="grid-2">
-          <div><label>Status</label><select id="c_loyaltyStatus"><option value="Inactive">Inactive</option><option value="Active">Active</option></select></div>
+          <div><label>Loyalty System</label><select id="c_loyaltyStatus"><option value="Inactive">Inactive</option><option value="Active">Active</option></select></div>
+          <div><label>Store Access</label><select id="c_storeStatus"><option value="Active">Active</option><option value="Inactive">Inactive</option></select></div>
+          <div><label>Inbox Access</label><select id="c_inboxStatus"><option value="Active">Active</option><option value="Inactive">Inactive</option></select></div>
           <div><label>Stamp Target</label><input type="number" id="c_stampTarget" value="10"></div>
         </div>
       </div>
+
       <div class="app-box">
         <h4 style="margin:0 0 10px 0; color:#1565c0;">📱 Client Login</h4>
         <div class="grid-2">
@@ -117,17 +122,21 @@
           let lBadge = c.LoyaltyStatus === 'Active' ? `<span style="color:green;font-weight:bold;">ON</span>` : `<span style="color:red;">OFF</span>`;
           let appBadge = (c.ClientPhone && c.Password) ? `<span style="color:blue;font-weight:bold;">Granted</span>` : `<span style="color:gray;">No Access</span>`;
           tbody.innerHTML += `<tr><td>${c.ID}</td><td>${c.BusinessName}</td><td>${appBadge}</td><td>${lBadge}</td>
-            <td><button class="btn-edit" onclick="editCust('${safeStr(c.ID)}','${safeStr(c.BusinessName)}','${safeStr(c.Type)}','${safeStr(c.WhatsApp)}','${safeStr(c.Maps)}','${safeStr(c.Facebook)}','${safeStr(c.Instagram)}','${safeStr(c.TikTok)}','${safeStr(c.Website)}','${safeStr(c.Email)}','${safeStr(c.MenuPDF)}','${safeStr(c.ThemeColor)}','${safeStr(c.Status)}','${safeStr(c.LoyaltyStatus)}','${safeStr(c.StampTarget)}','${safeStr(c.ClientPhone)}','${safeStr(c.Password)}','${safeStr(c.BankDetails)}','${safeStr(c.GoogleReview)}','${safeStr(c.ProfileImage)}','${safeStr(c.CoverImage)}')">Select</button></td></tr>`;
+            <td style="min-width: 130px;">
+              <button class="btn-edit" onclick="editCust('${safeStr(c.ID)}','${safeStr(c.BusinessName)}','${safeStr(c.Type)}','${safeStr(c.WhatsApp)}','${safeStr(c.Maps)}','${safeStr(c.Facebook)}','${safeStr(c.Instagram)}','${safeStr(c.TikTok)}','${safeStr(c.Website)}','${safeStr(c.Email)}','${safeStr(c.MenuPDF)}','${safeStr(c.ThemeColor)}','${safeStr(c.Status)}','${safeStr(c.LoyaltyStatus)}','${safeStr(c.StampTarget)}','${safeStr(c.ClientPhone)}','${safeStr(c.Password)}','${safeStr(c.BankDetails)}','${safeStr(c.GoogleReview)}','${safeStr(c.ProfileImage)}','${safeStr(c.CoverImage)}','${safeStr(c.StoreStatus)}','${safeStr(c.InboxStatus)}')">Select</button>
+              <button class="btn-edit" style="background:#d32f2f; margin-left:5px;" onclick="deleteCustomer('${safeStr(c.ID)}')"><i class="fas fa-trash"></i> Delete</button>
+            </td></tr>`;
         });
       });
     }
 
-    function editCust(id, name, type, wa, maps, fb, ig, tiktok, web, email, menu, theme, status, lStat, lTarg, cPh, cPas, cBank, cRev, cImg, cCover) {
+    function editCust(id, name, type, wa, maps, fb, ig, tiktok, web, email, menu, theme, status, lStat, lTarg, cPh, cPas, cBank, cRev, cImg, cCover, sStat, iStat) {
       document.getElementById('c_id').value = id; document.getElementById('c_name').value = name; document.getElementById('c_type').value = type;
       document.getElementById('c_wa').value = wa; document.getElementById('c_maps').value = maps; document.getElementById('c_fb').value = fb;
       document.getElementById('c_ig').value = ig; document.getElementById('c_tiktok').value = tiktok; document.getElementById('c_web').value = web;
       document.getElementById('c_email').value = email; document.getElementById('c_menu').value = menu; document.getElementById('c_theme').value = theme;
       document.getElementById('c_status').value = status; document.getElementById('c_loyaltyStatus').value = lStat || 'Inactive';
+      document.getElementById('c_storeStatus').value = sStat || 'Active'; document.getElementById('c_inboxStatus').value = iStat || 'Active';
       document.getElementById('c_stampTarget').value = lTarg || 10; document.getElementById('c_clientPhone').value = cPh;
       document.getElementById('c_password').value = cPas; document.getElementById('c_bank').value = cBank;
       document.getElementById('c_review').value = cRev; document.getElementById('c_image').value = cImg;
@@ -146,6 +155,7 @@
           Instagram: document.getElementById('c_ig').value, TikTok: document.getElementById('c_tiktok').value, Website: document.getElementById('c_web').value,
           Email: document.getElementById('c_email').value, MenuPDF: document.getElementById('c_menu').value, ThemeColor: document.getElementById('c_theme').value,
           Status: document.getElementById('c_status').value, LoyaltyStatus: document.getElementById('c_loyaltyStatus').value,
+          StoreStatus: document.getElementById('c_storeStatus').value, InboxStatus: document.getElementById('c_inboxStatus').value,
           StampTarget: document.getElementById('c_stampTarget').value, ClientPhone: document.getElementById('c_clientPhone').value,
           Password: document.getElementById('c_password').value, BankDetails: document.getElementById('c_bank').value,
           GoogleReview: document.getElementById('c_review').value, ProfileImage: document.getElementById('c_image').value,
@@ -153,6 +163,12 @@
         }
       };
       fetch(APPS_SCRIPT_URL, {method: "POST", body: JSON.stringify(payload)}).then(res=>res.json()).then(d=>{alert(d.message); loadCustomers();});
+    }
+
+    function deleteCustomer(id) {
+      if(!confirm("Are you sure you want to delete this customer? This action cannot be undone.")) return;
+      fetch(APPS_SCRIPT_URL, {method: "POST", body: JSON.stringify({action: "deleteCustomer", id: id, staffId: "Admin", staffName: "Admin"})})
+      .then(res=>res.json()).then(d=>{ alert(d.message); loadCustomers(); });
     }
 
     function adminFetchProducts() {
@@ -165,7 +181,7 @@
           d.data.forEach(p => {
             let pType = p.Type || "Product"; let pName = p.ProductName || "නම නැත"; let pId = p.ProductID || "No-ID"; let pPrice = p.Price || 0;
             let badge = `<span class="badge b-${pType}">${pType}</span>`;
-            h += `<div class="product-row"><div class="grid-2"><div>${badge} <strong>${pName}</strong> <br><small style="color:gray;">(ID: ${pId})</small></div><div style="display:flex; align-items:center; gap:5px;"><span style="font-weight:bold; color:#777; font-size:16px;">රු.</span><input type="number" id="ad_p_${pId}" value="${pPrice}" style="padding:5px; width:100px;"><button class="btn-edit" style="background:green;" onclick="adminUpdatePrice('${pId}')">Update</button></div></div></div>`;
+            h += `<div class="product-row"><div class="grid-2"><div>${badge} <strong>${pName}</strong> <br><small style="color:gray;">(ID: ${pId})</small></div><div style="display:flex; align-items:center; gap:5px;"><span style="font-weight:bold; color:#777; font-size:16px;">රු.</span><input type="number" id="ad_p_${pId}" value="${pPrice}" style="padding:5px; width:100px;"><button class="btn-edit" style="background:green;" onclick="adminUpdatePrice('${pId}')">Update</button> <button class="btn-edit" style="background:#d32f2f;" onclick="adminDeleteProduct('${pId}')">Delete</button></div></div></div>`;
           });
         } else { h = "කිසිම භාණ්ඩයක් හෝ කාමරයක් ඇතුළත් කර නැත."; }
         document.getElementById('adminProductsList').innerHTML = h;
@@ -181,6 +197,13 @@
     function adminUpdatePrice(pid) {
       const sid = document.getElementById('p_shop_id').value; const price = document.getElementById(`ad_p_${pid}`).value;
       fetch(APPS_SCRIPT_URL, {method:"POST", body:JSON.stringify({action:"updatePrice", shopId:sid, productId:pid, price:price})}).then(res=>res.json()).then(d=>{alert(d.message);});
+    }
+
+    function adminDeleteProduct(pid) {
+      const sid = document.getElementById('p_shop_id').value;
+      if(!confirm("Are you sure you want to delete this product?")) return;
+      fetch(APPS_SCRIPT_URL, {method:"POST", body:JSON.stringify({action:"deleteProduct", shopId:sid, productId:pid})})
+      .then(res=>res.json()).then(d=>{ alert(d.message); adminFetchProducts(); });
     }
 
     function adminFetchFeedback() {
